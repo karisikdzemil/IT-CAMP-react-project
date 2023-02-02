@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import LanguageContext from "./Contexts/LanguageContext";
+import GitHub from "./GitHubPages/GitHub";
+import Header from "./Header";
+import NewsCardDetail from "./NewsCardDetail/NewsCardDetail";
+import News from "./NewsPage/News";
+import ToDo from "./ToDo/ToDo";
 
-function App() {
+export default function App() {
+  const [language, setLanguage] = useState("English");
+
+  const changeLanguage = (language) => setLanguage(language);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Header changeLanguage={changeLanguage} />
+        <Switch>
+          <Route path="/github" component={GitHub} />
+          <Route path="/news" component={News} />
+          <Route
+            path="/"
+            exact
+            render={(props) => (
+              <LanguageContext.Provider value={language}>
+                <ToDo {...props} language={language} />
+              </LanguageContext.Provider>
+            )}
+          />
+          {/* <Route path="/" exact component={ToDo} /> */}
+          <Route
+            path="/news-card/:id"
+            render={(props) => <NewsCardDetail {...props} />}
+          />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
-
-export default App;
