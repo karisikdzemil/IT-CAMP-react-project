@@ -20,7 +20,6 @@ export default function ToDoList({ data = [] }) {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-    console.log(newChecked)
 
     setChecked(newChecked);
   };
